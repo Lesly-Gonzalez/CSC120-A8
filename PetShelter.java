@@ -1,12 +1,12 @@
 /*
 @File       : PetShelter.java
 @Time       : 2022/11/16 4:00 PM EST
-@Author     : JCrouser edited by Lily G., Juniper H., Lesly H., and Priscilla T.
+@Authors     : JCrouser edited by Lily G., Juniper H., Lesly H., and Priscilla T.
 @Desc       : A Java file that implements the contract file provided by Professor JCrouser. We chose to create a Petshelter and used different methods to interact with the pets.
 */
 
 import java.util.Hashtable; //imports Hashtable so that we can store a list of pets (key: name, value: type of animal) in the pet shelter
-import java.util.Set; //imports set keys for hashtable stuff
+
 
 public class PetShelter implements Contract {
     private Hashtable<String, Boolean> petsAvailable; // Hashtable to store pets in the shelter
@@ -17,6 +17,10 @@ public class PetShelter implements Contract {
     protected String health;
     protected int timeInShelter;
 
+
+    /** Class constructor 
+     * @param pet's name, age, type of animal, breed, health and time it has been in the shelter.
+     */
     public PetShelter(String name, int age, String animalType, String breed, String health, int timeInShelter) {
         this.name = name; // listing the attributes for our method
         this.age = age;
@@ -25,30 +29,46 @@ public class PetShelter implements Contract {
         this.health = health;
         this.timeInShelter = timeInShelter;
 
-        this.petsAvailable = new Hashtable<String, Boolean>(); // initializing our hashtable with our attributes
+        this.petsAvailable = new Hashtable<String, Boolean>(); // initializing hashtable with attributes
 
         System.out.println("Welcome to our Pet Shelter!");
         this.petsAvailable.put(this.name, true);
     }
 
-    public String getName() { // returns the name of the pet
+    /** Get the name of the pet
+     * @return pet's name
+     */
+    public String getName() { 
         return this.name;
     }
 
-    public int getAge() { // returns the age of the pet
+    /** Get the age of the pet
+     * @return pet's age
+     */
+    public int getAge() { 
         return this.age;
     }
 
-    public String animalType() { // returns the type of pet, cat, dog, bird, etc
+    /** Get the type of animal
+     * @return pet's species
+     */
+    public String animalType() { 
         return this.animalType;
     }
 
-    public String breed() { // returns the breed of the pet
+    /** Get the breed of the pet
+     * @return pet's breed
+     */
+    public String breed() { 
         return this.breed;
     }
 
-    /* methods */
-    public void grab(String item) { // implements grab from the provided contract @param: String Item
+    /* METHODS */
+
+    /** Grab a pet to adopt
+     * @param some pet
+     */
+    public void grab(String item) { 
         this.name = item;
 
         if (this.petsAvailable.get(item) == true) {
@@ -58,7 +78,11 @@ public class PetShelter implements Contract {
         }
     }
 
-    public String drop(String item) { // implements drop from the provided contract @param: String Item
+    /** Drop a pet into a new home
+     * @param some pet
+     * @return string with adoption confirmation message
+     */
+    public String drop(String item) { 
         this.name = item;
         String adopted = (name + " has been adopted into a loving home!");
         undo();
@@ -66,17 +90,27 @@ public class PetShelter implements Contract {
 
     }
 
-    public void examine(String item) { // implements examine from the provided contract @param: String Item
+    /** Examine the health of a pet
+     * @param health status of a pet
+     */
+    public void examine(String item) { 
         this.health = item;
         System.out.println(name + " is in " + health + " condition");
 
     }
 
-    public void use(String item) { // implements use from the provided contract @param: String Item
+    /** Give the pet items to use
+     * @param toy or accesory for the pet
+     */
+    public void use(String item) {
         System.out.println(name + " is using the " + item + ". So cute!");
     }
 
-    public boolean walk(String direction) { // implements walk from the provided contract @param: String Item
+    /** Walk the pet
+     * @param direction 
+     * @return boolean
+     */
+    public boolean walk(String direction) { 
         if (health != "Tired") {
             System.out.println(name + " is walking to " + direction);
             return true;
@@ -87,10 +121,13 @@ public class PetShelter implements Contract {
 
     }
 
-    public boolean fly(int x, int y) { // implements fly from the provided contract. This method only works for the
-                                       // animal type "Bird" @param: String Item
+    /** Let the pet fly (if it can)
+     * @param direction: horizontally(x) and altitude: vertically(y)
+     * @return boolean whether the pet can fly or not
+     */
+    public boolean fly(int x, int y) { 
+
         String animal = this.animalType.toLowerCase();
-        // System.out.println(animal);
 
         if (animal.equals("bird") && y > 0 && x > 0) {
             System.out.println(name + " is flying " + x + " meters to the front of the shelter");
@@ -107,53 +144,54 @@ public class PetShelter implements Contract {
         }
     }
 
-    public Number shrink() { // This method interacts with the length of time an animal has been adopted
-                             // (Shelter - 1)
+    /** Counts the number of days the pet has been in the shelter minus the day they arrived
+     * @return time in the shelter -1
+     */
+    public Number shrink() { 
         this.timeInShelter -= 1;
         System.out.println(name + " has been in their happy new home for " + timeInShelter + " days!");
         return timeInShelter;
-
     }
 
-    public Number grow() { // This method interacts with the length of time an animal has been in the
-                           // shelter (Shelter + 1)
+    /** Counts the number of days the pet has been in the shelter
+     * @return time in the shelter +1
+     */
+    public Number grow() { 
         this.timeInShelter += 1;
         System.out.println(name + " has been in the shelter for " + timeInShelter + " days.");
         return timeInShelter;
 
     }
 
-    public void play(String item) { // implements play from the provided contract @param: String Item
+    /** Let's the pet play, updates the health status, and puts the pet to rest.
+     * @param some toy 
+     */
+    public void play(String item) { 
         System.out.println(name + " is playing with " + item + " right now!");
         health = "Tired";
         rest();
     }
 
-    public void rest() { // implements rest from the provided contract
+    /** Puts the pet to rest and updates the health status
+     */
+    public void rest() { 
         examine("resting");
 
     }
 
-    public void undo() { // implements undo from the provided contract. Uses the .remove method with an
-                         // animal's name
+    /** Removes a pet from the shelter
+     */
+    public void undo() { 
         petsAvailable.put(name, false);
 
     }
 
-    public String toString() { // returns string of name, age, breed, and animal of pet at shelter
+    /**  @return string of name, age, breed, and specie of pet at shelter
+     */
+    public String toString() { 
         return this.name + " is a " + this.age + " year old " + this.breed + " " + this.animalType;
     }
 
-    public void printRegistry() { // prints out the entire registry of pets available in the shelter
-        Set<java.lang.String> keys = this.petsAvailable.keySet();
-        for (String key : keys) {
-            if (this.petsAvailable.get(key) == true) {
-                System.out.print(key + ", ");
-            }
-            ;
-        }
-        System.out.print("are all availible for adoption!");
-    }
 
     public static void main(String[] args) { // main for testing
         PetShelter mPetShelter = new pet("Tangbao", 1, "cat", "Domestic Short Hair", "Good", 10);
@@ -167,7 +205,6 @@ public class PetShelter implements Contract {
         mPetShelter.examine("tired");
         mPetShelter.drop("Tangbao");
         mPetShelter.fly(3, 1);
-        mPetShelter.printRegistry();
 
     }
 
